@@ -1,0 +1,11 @@
+#mainContainer {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    
+}
+
+.notesContainer {
+    display: flex;
+    flex-direction: column;
+}
