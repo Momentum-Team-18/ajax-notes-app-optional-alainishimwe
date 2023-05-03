@@ -2,8 +2,13 @@ let mainContainer = document.querySelector('#mainContainer')
 let notesContainer = document.createElement('div')
 let showAllNotes = document.querySelector('.allNotes')
 let addNotes = document.querySelector('.addNotes')
+let deleteNote = document.querySelector('.deleteNotes')
+let editNotes = document.querySelector('.editNotes')
 let yourNotes = document.querySelector('.yourNotes')
-console.log(showAllNotes)
+let numberToDelete = document.querySelector('.numberToDelete')
+let numberToEdit = document.querySelector('.numberToEdit')
+
+
 
 showAllNotes.addEventListener('click', (event) => {
     event.preventDefault();
@@ -27,7 +32,7 @@ fetch(postURL, {
         // let deleteNote = document.createElement('button')
         //     deleteNote.innerText = "delete"
         //     eachNote.appendChild(deleteNote)
-            eachPar.innerText = result.body
+            eachPar.innerText = `${result.id}) ${result.body}`
             eachNote.appendChild(eachPar)
             notesContainer.appendChild(eachNote)
             mainContainer.appendChild(notesContainer)
@@ -69,29 +74,49 @@ addNotes.addEventListener('click', (event) => {
 })
 
 
+editNotes.addEventListener('click', (event) => {
+    event.preventDefault()
+    let valueToEdit = numberToEdit.value
+
+    let editURL = `http://localhost:3000/notes/${valueToEdit}`
+
+    fetch(editURL, {
+        method: 'PATCH',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({"title" : "Hi", "body": `${yourNotes.value}`})
+    })
+    .then(function(response) {
+        return response.json()
+    })
+    .then(function(data) {
+        console.log(data)
+    })
 
 
-
-let editURL = 'http://localhost:3000/notes/:id'
-
-fetch(editURL, {
-    method: 'PATCH',
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({"title" : "Hi", "body": "COOL"})
 })
-.then(r => r.json())
-.then(
-    // do this
-)
 
-let deleteURL = 'http://localhost:3000/notes/:id=2'
+
+
+
+deleteNote.addEventListener('click', (event) => {
+    event.preventDefault()
+    let valueToDelete = numberToDelete.value
+    //alert('what note would you like to delete')
+
+    let deleteURL = `http://localhost:3000/notes/${valueToDelete}`
 
 fetch(deleteURL, {
     method: 'DELETE',
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({"title" : "Hi", "body": "COOL"})
+    //body: JSON.stringify({"title" : "Hi", "body": "COOL"})
 })
-.then(r => r.json())
-.then(
-    // do this
-)
+.then(function(response) {
+    return response.json()
+})
+.then(function(data) {
+    console.log(data)
+})
+
+})
+
+
